@@ -1,6 +1,6 @@
 package co.frog.pokedex.data.http
 
-import co.frog.pokedex.data.structures.NamedAPIResourceList
+import co.frog.pokedex.data.structures.api.NamedAPIResourceList
 import retrofit2.http.GET
 import retrofit2.http.Query
 
