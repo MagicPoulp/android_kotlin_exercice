@@ -69,14 +69,49 @@ android {
 
 
 dependencies {
-    //std lib
-    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-
     //app libs
-    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //test libs
+    // Kotlin extensions for androidx.test.core
+    // implementation("androidx.core:core-ktx:1.9.0")
+    // Kotlin extensions for androidx.test.ext.junit
+    //implementation("androidx.test.ext:junit-ktx:1.1.4")
+
+    // mockito
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    // for JUnit 5 extensions
+    // https://www.baeldung.com/mockito-junit-5-extension
+    //testImplementation "org.mockito:mockito-junit-jupiter:4.6.1"
+    //testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    //testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+
+    // temporary dir
+    // https://www.baeldung.com/junit-5-temporary-directory
+
+    // we use JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    //testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
+
+    // mockk has every ... getProperty
+    //testImplementation "io.mockk:mockk-android:1.13.1"
+    //testImplementation "io.mockk:mockk-agent:1.13.1"
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        events = setOf(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+        )
+        showStandardStreams = true
+    }
 }
