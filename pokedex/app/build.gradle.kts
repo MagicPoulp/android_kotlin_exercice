@@ -55,6 +55,13 @@ android {
         create("production") {
             dimension = AppConfig.dimension
         }
+
+        // https://developer.android.com/studio/build/optimize-your-build#kts
+        create("dev") {
+            // The following configuration limits the "dev" flavor to using
+            // English stringresources and xxhdpi screen-density resources.
+            resourceConfigurations.addAll(listOf("en", "xxhdpi"))
+        }
     }
 
     viewBinding {
@@ -152,3 +159,8 @@ allprojects {
         options.compilerArgs.plusAssign("-Xlint:deprecation")
     }
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask>()
+    .configureEach {
+        kaptProcessJvmArgs.add("-Xmx1g")
+    }

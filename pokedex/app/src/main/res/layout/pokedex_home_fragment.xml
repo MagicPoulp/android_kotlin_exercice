@@ -6,7 +6,8 @@
         <variable
             name="viewModel"
             type="co.frog.pokedex.ui.PokedexHomeFragmentDataBindingViewModel" />
-
+        <import type="co.frog.pokedex.ui.UiStateHomeFragment" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +20,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{viewModel.uiState == UiStateHomeFragment.SUCCESS ? View.VISIBLE : View.GONE }"
+            />
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_margin="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{viewModel.uiState != UiStateHomeFragment.SUCCESS ? View.VISIBLE : View.GONE }"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

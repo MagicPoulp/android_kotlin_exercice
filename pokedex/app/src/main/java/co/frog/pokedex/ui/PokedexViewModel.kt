@@ -46,7 +46,6 @@ class PokedexViewModel @Inject constructor(
             initialValue = ResultOf.Loading()
         )
 
-
     suspend fun fetchPokemon(): List<PokemonDetails> {
         val pokemonResults = pokemonDataRepository.getPokemon()
         if (pokemonResults.count < 1) {
