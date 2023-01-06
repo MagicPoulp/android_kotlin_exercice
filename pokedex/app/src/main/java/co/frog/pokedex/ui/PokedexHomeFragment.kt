@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.frog.pokedex.R
+import co.frog.pokedex.data.structures.PokemonDetails
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -25,17 +27,24 @@ class PokedexHomeFragment : Fragment(R.layout.pokedex_home_fragment) {
     lateinit var applicationContext: Context
 
     private val viewModel by viewModels<PokedexViewModel>()
+    private val dataBindingViewModel by viewModels<PokedexHomeFragmentDataBindingViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // benefits of doing this sophistication:
+        // a LiveData is observed on the main thread, not a flow with repeatOnLifecycle
+        // compared to launch, we do not waste a coroutine resource when stopped (in background)
+        // we wait a little for screen rotation to avoid interruption (with WhileSubscribed)
+        // a StateIn is produced only once
+        // https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
+        // https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.pokemonList.collect {
-                    val temp = it
-                    val temp2 = 2
+                    dataBindingViewModel.updateUI(it)
                 }
             }
         }

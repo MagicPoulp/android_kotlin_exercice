@@ -8,11 +8,13 @@ import co.frog.pokedex.data.structures.PokemonDetails
 import co.frog.pokedex.data.structures.ResultOf
 import co.frog.pokedex.domain.ExtractPokemonDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.runBlocking
+import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,19 +24,28 @@ class PokedexViewModel @Inject constructor(
 ) : ViewModel() {
 
     // https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    val pokemonList: StateFlow<ResultOf<List<PokemonDetails>>> = flow<ResultOf<List<PokemonDetails>>> {
-        try {
-            val pokemon = fetchPokemon()
-            emit(ResultOf.Success(pokemon))
+    // https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
+    val pokemonList: StateFlow<ResultOf<List<PokemonDetails>>> =
+        flow<ResultOf<List<PokemonDetails>>> {
+            while (true) {
+                try {
+                    val pokemon = fetchPokemon()
+                    emit(ResultOf.Success(pokemon))
+                    break
+                } catch (t: Throwable) {
+                    emit(ResultOf.Failure(null, t))
+                    // in case of error we retry after a delay
+                    sleep(10000L)
+                }
+            }
         }
-        catch(t: Throwable) {
-            emit(ResultOf.Failure(null, t))
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = WhileSubscribed(500),
-        initialValue = ResultOf.Loading()
-    )
+            .flowOn(Dispatchers.IO) // to avoid starvation due to the sleep
+            .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(500),
+            initialValue = ResultOf.Loading()
+        )
+
 
     suspend fun fetchPokemon(): List<PokemonDetails> {
         val pokemonResults = pokemonDataRepository.getPokemon()

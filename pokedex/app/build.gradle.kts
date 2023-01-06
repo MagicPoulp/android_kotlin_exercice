@@ -70,6 +70,19 @@ android {
 }
 
 dependencies {
+    //app libs
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
+    // JSON
+    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
     // for hilt dependency injection
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-compiler:2.44.2")
@@ -79,19 +92,6 @@ dependencies {
     // For local unit tests
     testImplementation("com.google.dagger:hilt-android-testing:2.44.2")
     kaptTest("com.google.dagger:hilt-compiler:2.44.2")
-
-    //app libs
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
-    implementation("com.github.bumptech.glide:glide:4.14.2")
-    // retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
-    // JSON
-    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
     //test libs
     // Kotlin extensions for androidx.test.core
