@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import co.frog.pokedex.R
-import co.frog.pokedex.data.structures.PokemonDetails
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -49,5 +49,23 @@ class PokedexHomeFragment : Fragment(R.layout.pokedex_home_fragment) {
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recyclerview = view.findViewById<RecyclerView>(R.id.rvPokemon)
+        // this creates a vertical layout Manager
+        recyclerview.layoutManager = LinearLayoutManager(activity)
+
+        // This will pass the ArrayList to our Adapter
+        val adapter = PokedexRecyclerViewAdapter()
+
+        // Setting the Adapter with the recyclerview
+        recyclerview.adapter = adapter
+
+        dataBindingViewModel.pokemonList.observe(viewLifecycleOwner) { list ->
+            (recyclerview.adapter as PokedexRecyclerViewAdapter).setData(list)
+        }
     }
 }
