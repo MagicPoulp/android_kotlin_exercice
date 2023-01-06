@@ -12,6 +12,6 @@ class PokemonDataRepository @Inject constructor() {
         .create(PokemonApi::class.java)
 
     suspend fun getPokemon(): NamedAPIResourceList {
-        pokemonApi.getPokemon(limit = 10, offset = 0)
+        return pokemonApi.getPokemon(limit = 10, offset = 0)
     }
 }

@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-
 @HiltViewModel
 class PokedexViewModel @Inject constructor(
     private val pokemonDataRepository: PokemonDataRepository,
@@ -23,7 +22,7 @@ class PokedexViewModel @Inject constructor(
 ) : ViewModel() {
 
     // https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
-    val listOfPokemon: StateFlow<ResultOf<List<PokemonDetails>>> = flow<ResultOf<List<PokemonDetails>>> {
+    val pokemonList: StateFlow<ResultOf<List<PokemonDetails>>> = flow<ResultOf<List<PokemonDetails>>> {
         try {
             val pokemon = fetchPokemon()
             emit(ResultOf.Success(pokemon))
