@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class PokedexUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
