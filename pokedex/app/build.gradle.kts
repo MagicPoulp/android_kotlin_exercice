@@ -115,6 +115,7 @@ dependencies {
 
     // mockito
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
 
     // for JUnit 5 extensions
     // https://www.baeldung.com/mockito-junit-5-extension

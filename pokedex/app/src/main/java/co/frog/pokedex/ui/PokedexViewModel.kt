@@ -9,12 +9,12 @@ import co.frog.pokedex.data.structures.ResultOf
 import co.frog.pokedex.domain.ExtractPokemonDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
-import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,11 +35,11 @@ class PokedexViewModel @Inject constructor(
                 } catch (t: Throwable) {
                     emit(ResultOf.Failure(null, t))
                     // in case of error we retry after a delay
-                    sleep(10000L)
+                    delay(10000L)
                 }
             }
         }
-            .flowOn(Dispatchers.IO) // to avoid starvation due to the sleep
+            .flowOn(Dispatchers.IO)
             .stateIn(
             scope = viewModelScope,
             started = WhileSubscribed(500),
