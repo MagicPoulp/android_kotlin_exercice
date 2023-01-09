@@ -45,7 +45,8 @@ android {
         }
     }
 
-    flavorDimensions(AppConfig.dimension)
+    // https://developer.android.com/studio/build/build-variants#kts
+    flavorDimensions += AppConfig.dimension
     productFlavors {
         create("staging") {
             applicationIdSuffix = ".staging"
@@ -56,8 +57,8 @@ android {
             dimension = AppConfig.dimension
         }
 
-        // https://developer.android.com/studio/build/optimize-your-build#kts
         create("dev") {
+            dimension = AppConfig.dimension
             // The following configuration limits the "dev" flavor to using
             // English stringresources and xxhdpi screen-density resources.
             resourceConfigurations.addAll(listOf("en", "xxhdpi"))
@@ -92,10 +93,10 @@ dependencies {
 
     // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     // JSON
     implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1")
     // for hilt dependency injection
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-compiler:2.44.2")
@@ -113,7 +114,7 @@ dependencies {
     //implementation("androidx.test.ext:junit-ktx:1.1.4")
 
     // mockito
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
 
     // for JUnit 5 extensions
     // https://www.baeldung.com/mockito-junit-5-extension
@@ -125,8 +126,8 @@ dependencies {
     // https://www.baeldung.com/junit-5-temporary-directory
 
     // we use JUnit 5
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
     //testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
 
     // mockk has every ... getProperty
