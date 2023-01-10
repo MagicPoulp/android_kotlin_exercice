@@ -79,6 +79,12 @@ android {
     dataBinding {
         enable = true
     }
+
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
@@ -115,7 +121,10 @@ dependencies {
 
     // mockito
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.mockito:mockito-inline:4.11.0")
+    testImplementation("org.hamcrest:hamcrest:2.2")
+    testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.5.1")
 
     // for JUnit 5 extensions
     // https://www.baeldung.com/mockito-junit-5-extension

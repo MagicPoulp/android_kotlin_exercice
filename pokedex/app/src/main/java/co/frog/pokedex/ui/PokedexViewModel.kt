@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+// https://medium.com/@hamanhduy/test-your-android-mvvm-app-with-hilt-2ad583e49f74
+// https://developer.android.com/training/dependency-injection/hilt-testing#replace-binding
+
 @HiltViewModel
 class PokedexViewModel @Inject constructor(
     private val pokemonDataRepository: PokemonDataRepository,

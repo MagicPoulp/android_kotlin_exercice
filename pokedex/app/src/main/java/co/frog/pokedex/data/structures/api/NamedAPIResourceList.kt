@@ -12,5 +12,5 @@ data class NamedAPIResourceList(
     @JsonProperty("previous")
     val previous: String?,
     @JsonProperty("results")
-    val results: List<NamedApiResource>
+    val results: List<NamedAPIResource>
 )
