@@ -123,7 +123,7 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("org.mockito:mockito-inline:4.11.0")
-    testImplementation("org.hamcrest:hamcrest:2.2")
+    // testImplementation("org.hamcrest:hamcrest:2.2") // already loaded
     testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.5.1")
 
     // for JUnit 5 extensions

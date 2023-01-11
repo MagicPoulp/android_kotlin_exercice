@@ -34,7 +34,7 @@ class PokedexViewModel @Inject constructor(
                 try {
                     val pokemon = fetchPokemon()
                     emit(ResultOf.Success(pokemon))
-                    break
+                    return@flow
                 } catch (t: Throwable) {
                     emit(ResultOf.Failure(null, t))
                     // in case of error we retry after a delay
@@ -49,7 +49,7 @@ class PokedexViewModel @Inject constructor(
             initialValue = ResultOf.Loading()
         )
 
-    suspend fun fetchPokemon(): List<PokemonDetails> {
+    private suspend fun fetchPokemon(): List<PokemonDetails> {
         val pokemonResults = pokemonDataRepository.getPokemon()
         if (pokemonResults.count < 1) {
             throw InvalidDataException()

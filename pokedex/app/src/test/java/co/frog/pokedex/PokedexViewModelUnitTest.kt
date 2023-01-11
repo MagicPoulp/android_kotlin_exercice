@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -42,12 +43,14 @@ class PokedexViewModelUnitTest {
             results = results,
         )
     }
+
     private val testingPokemonList = getDummyPokemonList()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun beforeEach() {
         // https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
+        // this dispatcher skips delays
         Dispatchers.setMain(UnconfinedTestDispatcher())
         //Dispatchers.setMain(StandardTestDispatcher())
         val pokemonDataRepository = mock<PokemonDataRepository>() {
@@ -67,9 +70,6 @@ class PokedexViewModelUnitTest {
     @Test
     fun testGetPokemon() = runTest {
         val actual = mutableListOf<ResultOf<List<PokemonDetails>>>()
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-/*
         val testLifecycleOwner = TestLifecycleOwner()
         testLifecycleOwner.lifecycleScope.launch {
             testLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -78,18 +78,16 @@ class PokedexViewModelUnitTest {
                 }
             }
         }
+        testLifecycleOwner.currentState = Lifecycle.State.CREATED
+        testLifecycleOwner.currentState = Lifecycle.State.STARTED
+        runCurrent()
+        advanceUntilIdle()
+        assertThat("number of values", actual.size, equalTo(2))
+        assertThat("number of values", actual.size, equalTo(2))
+        assertThat("Loading value", actual[0], equalTo(ResultOf.Loading("2")))
+        //assertThat("Success value", actual[1], equalTo(ResultOf.Success(testingPokemonList)))
+        //ResultOf.Success(pokemon)
+        //assertThat("Success value", actual.get(2), equalTo(ResultOf.Success))
 
-                assertThat("", actual.size == 2)
-                //launch(UnconfinedTestDispatcher(testScheduler)) {
-                //pokeViewModel.pokemonList.collect {
-                //    actual.add(it)
-                //}
-                //}
-                //assertThat("",actual.size == 2)
-                //assertEquals(pokeViewModel.pokemonList.value is ResultOf.Success, true)
-            }
-        }
     }
-
- */
 }

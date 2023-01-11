@@ -49,6 +49,7 @@ class PokedexHomeFragment : Fragment(R.layout.pokedex_home_fragment) {
         // a StateIn is produced only once
         // https://medium.com/androiddevelopers/migrating-from-livedata-to-kotlins-flow-379292f419fb
         // https://bladecoder.medium.com/kotlins-flow-in-viewmodels-it-s-complicated-556b472e281a
+        // https://developer.android.com/topic/libraries/data-binding/observability#stateflow
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.pokemonList.collect {
