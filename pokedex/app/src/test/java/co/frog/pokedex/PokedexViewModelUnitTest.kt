@@ -1,5 +1,6 @@
 package co.frog.pokedex
 
+import android.graphics.Bitmap
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -21,6 +22,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
@@ -45,6 +47,14 @@ class PokedexViewModelUnitTest {
     }
 
     private val testingPokemonList = getDummyPokemonList()
+    private val testingPokemonDetails = listOf(
+        PokemonDetails(
+            name = testingPokemonList.results[0].name,
+            id = 1,
+            spriteUrl = "url",
+            sprite = mock<Bitmap>()
+        )
+    )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -53,10 +63,12 @@ class PokedexViewModelUnitTest {
         // this dispatcher skips delays
         Dispatchers.setMain(UnconfinedTestDispatcher())
         //Dispatchers.setMain(StandardTestDispatcher())
-        val pokemonDataRepository = mock<PokemonDataRepository>() {
+        val pokemonDataRepository = mock<PokemonDataRepository> {
             onBlocking { getPokemon() } doReturn testingPokemonList
         }
-        val extractPokemonDetailsUseCase = mock<ExtractPokemonDetailsUseCase>()
+        val extractPokemonDetailsUseCase = mock<ExtractPokemonDetailsUseCase> {
+            on { invoke(any()) } doReturn testingPokemonDetails
+        }
         pokeViewModel = PokedexViewModel(pokemonDataRepository, extractPokemonDetailsUseCase)
     }
 
@@ -78,14 +90,13 @@ class PokedexViewModelUnitTest {
                 }
             }
         }
-        testLifecycleOwner.currentState = Lifecycle.State.CREATED
         testLifecycleOwner.currentState = Lifecycle.State.STARTED
         runCurrent()
         advanceUntilIdle()
         assertThat("number of values", actual.size, equalTo(2))
         assertThat("number of values", actual.size, equalTo(2))
-        assertThat("Loading value", actual[0], equalTo(ResultOf.Loading("2")))
-        //assertThat("Success value", actual[1], equalTo(ResultOf.Success(testingPokemonList)))
+        assertThat("Loading value", actual[0], equalTo(ResultOf.Loading("")))
+        assertThat("Success value", actual[1], equalTo(ResultOf.Success(testingPokemonDetails)))
         //ResultOf.Success(pokemon)
         //assertThat("Success value", actual.get(2), equalTo(ResultOf.Success))
 
