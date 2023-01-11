@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.testing.TestLifecycleOwner
+import app.cash.turbine.test
 import co.frog.pokedex.data.repositories.PokemonDataRepository
 import co.frog.pokedex.data.structures.PokemonDetails
 import co.frog.pokedex.data.structures.ResultOf
@@ -62,7 +63,6 @@ class PokedexViewModelUnitTest {
         // https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-test/MIGRATION.md
         // this dispatcher skips delays
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        //Dispatchers.setMain(StandardTestDispatcher())
         val pokemonDataRepository = mock<PokemonDataRepository> {
             onBlocking { getPokemon() } doReturn testingPokemonList
         }
@@ -81,24 +81,24 @@ class PokedexViewModelUnitTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun testGetPokemon() = runTest {
-        val actual = mutableListOf<ResultOf<List<PokemonDetails>>>()
-        val testLifecycleOwner = TestLifecycleOwner()
-        testLifecycleOwner.lifecycleScope.launch {
-            testLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                pokeViewModel.pokemonList.collect {
-                    actual.add(it)
+        pokeViewModel.pokemonList.test { // test is needed with turbine
+            val actual = mutableListOf<ResultOf<List<PokemonDetails>>>()
+            val testLifecycleOwner = TestLifecycleOwner()
+            testLifecycleOwner.lifecycleScope.launch {
+                testLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    pokeViewModel.pokemonList.collect {
+                        actual.add(it)
+                    }
                 }
             }
+            testLifecycleOwner.currentState = Lifecycle.State.STARTED
+            // we must wait for 2 items because the coroutine is waiting on the collec
+            // and the library turbine helps a lot for that using awaitItem()
+            awaitItem()
+            awaitItem()
+            assertThat("number of values", actual.size, equalTo(2))
+            assertThat("Loading value", actual[0], equalTo(ResultOf.Loading("")))
+            assertThat("Success value", actual[1], equalTo(ResultOf.Success(testingPokemonDetails)))
         }
-        testLifecycleOwner.currentState = Lifecycle.State.STARTED
-        runCurrent()
-        advanceUntilIdle()
-        assertThat("number of values", actual.size, equalTo(2))
-        assertThat("number of values", actual.size, equalTo(2))
-        assertThat("Loading value", actual[0], equalTo(ResultOf.Loading("")))
-        assertThat("Success value", actual[1], equalTo(ResultOf.Success(testingPokemonDetails)))
-        //ResultOf.Success(pokemon)
-        //assertThat("Success value", actual.get(2), equalTo(ResultOf.Success))
-
     }
 }

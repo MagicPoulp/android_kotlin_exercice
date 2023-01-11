@@ -125,6 +125,7 @@ dependencies {
     testImplementation("org.mockito:mockito-inline:4.11.0")
     // testImplementation("org.hamcrest:hamcrest:2.2") // already loaded
     testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.5.1")
+    testImplementation("app.cash.turbine:turbine:0.12.1")
 
     // for JUnit 5 extensions
     // https://www.baeldung.com/mockito-junit-5-extension
