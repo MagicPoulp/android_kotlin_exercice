@@ -27,6 +27,19 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
+
+/*
+1. Adapt Hilt for the test
+Mock all the injected dependencies, and isolate the ViewModel
+@HiltAndroidTest
+2. to skip delays in the tests
+Dispatchers.setMain(UnconfinedTestDispatcher())
+3. to simulate the a test lifecycleOwner to test the flow
+4. Turbine and awaitItem to wait for the emits
+5. assertThat to have nice assertions with good error reporting
+testLifecycleOwner = TestLifecycleOwner()
+ */
+
 @HiltAndroidTest
 class PokedexViewModelUnitTest {
 
