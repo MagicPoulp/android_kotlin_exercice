@@ -104,7 +104,9 @@ class PokedexViewModelUnitTest {
                     }
                 }
             }
-            testLifecycleOwner.currentState = Lifecycle.State.STARTED
+            // currentState is STARTED by default
+            //println(testLifecycleOwner.currentState)
+            //testLifecycleOwner.currentState = Lifecycle.State.STARTED
             // we must wait for 2 items because the coroutine is waiting on the collec
             // and the library turbine helps a lot for that using awaitItem()
             awaitItem()
