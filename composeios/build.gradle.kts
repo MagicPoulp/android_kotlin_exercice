@@ -20,6 +20,7 @@ import org.jetbrains.compose.experimental.dsl.IOSDevices
 
 plugins {
     kotlin("multiplatform")
+    // https://github.com/JetBrains/compose-jb/blob/master/tutorials/Getting_Started/README.md
     id("org.jetbrains.compose") version "1.3.0-rc01"
 }
 
