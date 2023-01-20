@@ -54,3 +54,7 @@ android {
         targetSdk = 33
     }
 }
+
+repositories {
+    mavenCentral()
+}
