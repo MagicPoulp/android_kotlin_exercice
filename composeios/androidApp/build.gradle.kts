@@ -17,7 +17,9 @@ android {
         compose = true
     }
     composeOptions {
-    //    kotlinCompilerExtensionVersion = "1.3.0"
+        // https://androidx.dev/storage/compose-compiler/repository
+        kotlinCompilerExtensionVersion = "1.4.0"
+        //    kotlinCompilerExtensionVersion = "1.3.0"
     }
     packagingOptions {
         resources {
